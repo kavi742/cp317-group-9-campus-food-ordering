@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import MenuPage from "./pages/MenuPage";
-import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import OrderHistoryPage from "./pages/OrderHistoryPage";
-import EmployeePage from "./pages/EmployeePage";
-import ManagerPage from "./pages/ManagerPage";
+import LoginPage from "./pages/LoginPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import MenuPage from "./pages/MenuPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
+import OrderHistoryPage from "./pages/OrderHistoryPage.jsx";
+import EmployeePage from "./pages/EmployeePage.jsx";
+import ManagerPage from "./pages/ManagerPage.jsx";
 
 function App() {
   return (
