@@ -1,7 +1,8 @@
 package com.cp317.group9.campus_cafe.controller;
 
+import com.cp317.group9.campus_cafe.model.ApiResponse;
 import com.cp317.group9.campus_cafe.model.User;
-import com.cp317.group9.campus_cafe.service.UserService;
+import com.cp317.group9.campus_cafe.service.UserServiceInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,32 +11,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final UserServiceInterface userService;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserServiceInterface userService) {
         this.userService = userService;
     }
 
-
-    @Operation(summary="Create a new user")
+    @Operation(summary = "Register a new user")
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        User saved = userService.register(user);
-        return ResponseEntity.ok(saved);
+    public ApiResponse<User> register(@RequestBody User user) {
+        return ApiResponse.ok(userService.register(user));
     }
 
+    @Operation(summary = "Login with email and password")
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
+    public ResponseEntity<ApiResponse<User>> login(@RequestBody User user) {
         User found = userService.login(user.getEmail(), user.getPassword());
         if (found == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(401).body(ApiResponse.error("Invalid email or password"));
         }
-        return ResponseEntity.ok(found);
+        return ResponseEntity.ok(ApiResponse.ok(found));
     }
 
-    @Operation(summary="Delete a user by user id")
+    @Operation(summary = "Delete a user by id")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ApiResponse<Void> delete(@PathVariable Long id) {
         userService.delete(id);
+        return ApiResponse.ok(null);
     }
 }

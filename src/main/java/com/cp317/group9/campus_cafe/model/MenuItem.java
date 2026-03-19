@@ -3,9 +3,7 @@ package com.cp317.group9.campus_cafe.model;
 import jakarta.persistence.*;
 
 @Entity
-public class MenuItem {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class MenuItem extends BaseEntity {
     private String name;
     private String category;
     private double price;
@@ -13,7 +11,6 @@ public class MenuItem {
     private boolean available;
     private String description;
 
-    public Long getId() { return id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getCategory() { return category; }

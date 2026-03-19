@@ -19,15 +19,16 @@ function CartPage() {
       <Navbar />
       <div className="page">
         <h1>Cart</h1>
+        {cart.length === 0 && <p>Your cart is empty.</p>}
         {cart.map((item, index) => (
           <div key={index}>
             <span>{item.name} - ${item.price}</span>
-            <button onClick={() => removeItem(index)}>Remove</button>
+            <button className="danger" style={{ width: "auto", marginLeft: "8px" }} onClick={() => removeItem(index)}>Remove</button>
           </div>
         ))}
-        <p>Total: ${total.toFixed(2)}</p>
-        <button onClick={() => navigate("/menu")}>Back to Menu</button>
-        <button onClick={() => navigate("/checkout")}>Checkout</button>
+        <p style={{ marginTop: "16px" }}>Total: ${total.toFixed(2)}</p>
+        <button className="secondary" style={{ marginTop: "8px" }} onClick={() => navigate("/menu")}>Back to Menu</button>
+        <button style={{ marginTop: "8px" }} onClick={() => navigate("/checkout")}>Checkout</button>
       </div>
     </div>
   );

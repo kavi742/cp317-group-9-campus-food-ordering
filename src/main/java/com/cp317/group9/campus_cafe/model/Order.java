@@ -6,9 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class Order {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Order extends BaseEntity {
     private Long customerId;
     private String status;
     private String paymentMethod;
@@ -18,7 +16,6 @@ public class Order {
     @Transient
     private List<OrderItem> items;
 
-    public Long getId() { return id; }
     public Long getCustomerId() { return customerId; }
     public void setCustomerId(Long customerId) { this.customerId = customerId; }
     public String getStatus() { return status; }
@@ -27,8 +24,14 @@ public class Order {
     public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
     public double getTotal() { return total; }
     public void setTotal(double total) { this.total = total; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public List<OrderItem> getItems() { return items; }
     public void setItems(List<OrderItem> items) { this.items = items; }
+    public void updateStatus(String newStatus) {
+        List<String> validStatuses = List.of("CONFIRMED", "PREPARING", "READY", "FULFILLED");
+        if (!validStatuses.contains(newStatus)) {
+            throw new IllegalArgumentException("Invalid status: " + newStatus);
+        }
+        this.status = newStatus;
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MenuService {
+public class MenuService implements MenuServiceInterface {
 
     private final MenuItemRepository menuItemRepository;
 
@@ -14,14 +14,17 @@ public class MenuService {
         this.menuItemRepository = menuItemRepository;
     }
 
+    @Override
     public List<MenuItem> getAll() {
         return menuItemRepository.findAll();
     }
 
+    @Override
     public MenuItem create(MenuItem item) {
         return menuItemRepository.save(item);
     }
 
+    @Override
     public MenuItem update(Long id, MenuItem updated) {
         MenuItem existing = menuItemRepository.findById(id).orElseThrow();
         existing.setName(updated.getName());
@@ -33,6 +36,7 @@ public class MenuService {
         return menuItemRepository.save(existing);
     }
 
+    @Override
     public void delete(Long id) {
         menuItemRepository.deleteById(id);
     }

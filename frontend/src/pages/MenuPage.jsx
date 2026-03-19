@@ -8,7 +8,9 @@ function MenuPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/api/menu").then((res) => res.json()).then(setItems);
+    fetch("/api/menu")
+      .then((res) => res.json())
+      .then((res) => setItems(res.data));
   }, []);
 
   const addToCart = (item) => {

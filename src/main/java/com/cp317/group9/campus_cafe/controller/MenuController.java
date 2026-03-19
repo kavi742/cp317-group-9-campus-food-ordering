@@ -1,7 +1,8 @@
 package com.cp317.group9.campus_cafe.controller;
 
+import com.cp317.group9.campus_cafe.model.ApiResponse;
 import com.cp317.group9.campus_cafe.model.MenuItem;
-import com.cp317.group9.campus_cafe.service.MenuService;
+import com.cp317.group9.campus_cafe.service.MenuServiceInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,33 +11,34 @@ import java.util.List;
 @RequestMapping("/api/menu")
 public class MenuController {
 
-    private final MenuService menuService;
+    private final MenuServiceInterface menuService;
 
-    public MenuController(MenuService menuService) {
+    public MenuController(MenuServiceInterface menuService) {
         this.menuService = menuService;
     }
 
-    @Operation(summary="Get all menu items")
+    @Operation(summary = "Get all menu items")
     @GetMapping
-    public List<MenuItem> getAll() {
-        return menuService.getAll();
+    public ApiResponse<List<MenuItem>> getAll() {
+        return ApiResponse.ok(menuService.getAll());
     }
 
-    @Operation(summary="Create a new menu item by id")
+    @Operation(summary = "Create a new menu item")
     @PostMapping
-    public MenuItem create(@RequestBody MenuItem item) {
-        return menuService.create(item);
+    public ApiResponse<MenuItem> create(@RequestBody MenuItem item) {
+        return ApiResponse.ok(menuService.create(item));
     }
 
-    @Operation(summary="Update a menu item by id")
+    @Operation(summary = "Update a menu item by id")
     @PutMapping("/{id}")
-    public MenuItem update(@PathVariable Long id, @RequestBody MenuItem item) {
-        return menuService.update(id, item);
+    public ApiResponse<MenuItem> update(@PathVariable Long id, @RequestBody MenuItem item) {
+        return ApiResponse.ok(menuService.update(id, item));
     }
 
-    @Operation(summary="Delete a menu item")
+    @Operation(summary = "Delete a menu item by id")
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ApiResponse<Void> delete(@PathVariable Long id) {
         menuService.delete(id);
+        return ApiResponse.ok(null);
     }
 }

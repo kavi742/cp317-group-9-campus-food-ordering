@@ -5,7 +5,7 @@ import com.cp317.group9.campus_cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface {
 
     private final UserRepository userRepository;
 
@@ -13,6 +13,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Override
     public User register(User user) {
         if (user.getRole() == null) {
             user.setRole("CUSTOMER");
@@ -20,6 +21,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Override
     public User login(String email, String password) {
         User user = userRepository.findByEmail(email);
         if (user != null && user.getPassword().equals(password)) {
@@ -28,6 +30,7 @@ public class UserService {
         return null;
     }
 
+    @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
     }

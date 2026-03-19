@@ -6,9 +6,10 @@ function OrderHistoryPage() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
+    if (!user.id) return;
     fetch(`/api/orders/customer/${user.id}`)
       .then((res) => res.json())
-      .then(setOrders);
+      .then((res) => setOrders(res.data || []));
   }, []);
 
   return (
@@ -16,9 +17,13 @@ function OrderHistoryPage() {
       <Navbar />
       <div className="page">
         <h1>Order History</h1>
+        {orders.length === 0 && <p>No orders found.</p>}
         {orders.map((order) => (
-          <div key={order.id}>
-            <p>Order #{order.id} - {order.status} - ${order.total} - {order.paymentMethod}</p>
+          <div key={order.id} className="card" style={{ marginBottom: "12px" }}>
+            <p>Order #{order.id}</p>
+            <p>Status: <span className={`badge ${order.status.toLowerCase()}`}>{order.status}</span></p>
+            <p>Total: ${order.total}</p>
+            <p>Payment: {order.paymentMethod}</p>
           </div>
         ))}
       </div>
