@@ -57,7 +57,7 @@ npm -v
 ### 1. Clone the repo
 ```
 git clone https://github.com/kavi742/cp317-group-9-campus-food-ordering.git
-cd cp317-group-9-campus-food-ordering 
+cd cp317-group-9-campus-food-ordering
 ```
 
 ### 2. Check out the dev branch
@@ -68,6 +68,13 @@ git checkout dev
 ### 3. Create your feature branch
 ```
 git checkout -b feature/{your-feature-name}
+```
+
+### 4. Install frontend dependencies
+```
+cd frontend
+npm install
+cd ..
 ```
 
 ---
@@ -93,11 +100,10 @@ Backend runs on http://localhost:8080
 ### Mac/Linux and Windows
 ```
 cd frontend
-npm install
-npm start
+npm run dev
 ```
 
-Frontend runs on http://localhost:3000
+Frontend runs on http://localhost:5173
 
 You need the backend running at the same time in a separate terminal.
 
@@ -108,18 +114,20 @@ You need the backend running at the same time in a separate terminal.
 Open two terminals:
 
 **Terminal 1 — Backend**
+
+Mac/Linux:
 ```
 ./gradlew bootRun
-or
-On Windows
+```
+Windows:
+```
 gradlew.bat bootRun
 ```
 
 **Terminal 2 — Frontend**
 ```
 cd frontend
-npm install
-npm start
+npm run dev
 ```
 
 ---
@@ -153,6 +161,15 @@ http://localhost:8080/swagger-ui.html
 
 This shows all available endpoints and lets you test them directly in the browser.
 
+All API responses follow this standard format:
+```json
+{
+  "success": true,
+  "message": "Success",
+  "data": { ... }
+}
+```
+
 ---
 
 ## H2 Database Console
@@ -169,16 +186,36 @@ User Name: sa
 Password:  (leave blank)
 ```
 
+Useful queries:
+```sql
+SELECT * FROM USERS;
+SELECT * FROM MENU_ITEM;
+SELECT * FROM ORDERS;
+SELECT * FROM ORDER_ITEM;
+```
+
+---
+
+## Test Accounts
+
+Use these accounts to test each role:
+```
+CUSTOMER  --  email: alice@school.ca   password: pass123
+EMPLOYEE  --  email: bob@school.ca     password: pass123
+MANAGER   --  email: carol@school.ca   password: pass123
+```
+
 ---
 
 ## Project Structure
+```
 cp317-group-9-campus-food-ordering/
   src/
     main/java/com/cp317/group9/campus_cafe/
       controller/       -- API endpoints
-      service/          -- Business logic
+      service/          -- Business logic (interfaces + implementations)
       repository/       -- Database access
-      model/            -- Data models
+      model/            -- Data models (all extend BaseEntity)
       config/           -- CORS configuration
     resources/
       application.properties
@@ -189,8 +226,37 @@ cp317-group-9-campus-food-ordering/
   frontend/
     src/
       pages/            -- React pages
+      components/       -- Shared components (Navbar)
+    vite.config.js      -- Vite config with proxy to backend
     package.json
 ```
+
+---
+
+## OOP Design
+
+The backend demonstrates the following OOP principles:
+
+**Inheritance** — All model classes (`User`, `MenuItem`, `Order`, `OrderItem`) extend `BaseEntity` which provides `id`, `createdAt`, and `updatedAt` fields automatically.
+
+**Abstraction** — Each service has an interface (`MenuServiceInterface`, `UserServiceInterface`, `OrderServiceInterface`) that defines the contract. Controllers depend on interfaces, not implementations.
+
+**Encapsulation** — The `Order` model owns its own status validation logic through `updateStatus()`, which rejects invalid status values before they reach the database.
+
+**Polymorphism** — `ApiResponse<T>` is a generic wrapper that works with any return type across all endpoints.
+
+---
+
+## Order Status Flow
+```
+CONFIRMED -> PREPARING -> READY -> FULFILLED
+```
+
+---
+
+## Payment Simulation
+
+The payment processor is simulated via `PaymentService`. It is currently set to approve all payments. No real payment information is required — simply select a payment method at checkout and submit.
 
 ---
 
@@ -201,13 +267,6 @@ cp317-group-9-campus-food-ordering/
 - Name your branch `feature/your-feature-name`
 - Open a pull request into `dev` when your feature is done
 - `main` is reserved for final stable releases only
-
----
-
-## Order Status Flow
-```
-CONFIRMED -> PREPARING -> READY -> FULFILLED
-```
 
 ---
 
@@ -230,10 +289,29 @@ netstat -ano | findstr :8080
 taskkill /PID <PID> /F
 ```
 
+**Port 5173 already in use (Mac/Linux)**
+```
+lsof -i :5173
+kill -9 <PID>
+```
+
+**Port 5173 already in use (Windows)**
+```
+netstat -ano | findstr :5173
+taskkill /PID <PID> /F
+```
+
 **npm install fails**
-Delete `node_modules` and try again:
 ```
 rm -rf frontend/node_modules
 cd frontend
 npm install
 ```
+
+**CORS error on API calls**
+
+Make sure the backend is running on port 8080 and that `CorsConfig.java` includes `http://localhost:5173` as an allowed origin.
+
+**H2 database is empty after restart**
+
+H2 is an in-memory database. All data is wiped when the backend restarts. Re-run the seed data by restarting the backend — `data.sql` runs automatically on startup.
