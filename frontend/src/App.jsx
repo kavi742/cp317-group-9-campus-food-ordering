@@ -7,6 +7,7 @@ import CheckoutPage from "./pages/CheckoutPage.jsx";
 import OrderHistoryPage from "./pages/OrderHistoryPage.jsx";
 import EmployeePage from "./pages/EmployeePage.jsx";
 import ManagerPage from "./pages/ManagerPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
@@ -14,12 +15,36 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/menu" element={<MenuPage />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/history" element={<OrderHistoryPage />} />
-        <Route path="/employee" element={<EmployeePage />} />
-        <Route path="/manager" element={<ManagerPage />} />
+        <Route path="/menu" element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <MenuPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/cart" element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CartPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/checkout" element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <CheckoutPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/history" element={
+          <ProtectedRoute allowedRoles={["CUSTOMER"]}>
+            <OrderHistoryPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/employee" element={
+          <ProtectedRoute allowedRoles={["EMPLOYEE"]}>
+            <EmployeePage />
+          </ProtectedRoute>
+        } />
+        <Route path="/manager" element={
+          <ProtectedRoute allowedRoles={["MANAGER"]}>
+            <ManagerPage />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );
