@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar.jsx";
 
 function EmployeePage() {
   const [items, setItems] = useState([]);
@@ -19,15 +20,18 @@ function EmployeePage() {
 
   return (
     <div>
-      <h1>Employee - Stock Management</h1>
-      {items.map((item) => (
-        <div key={item.id}>
-          <span>{item.name}</span>
-          <button onClick={() => toggleAvailability(item)}>
-            {item.available ? "Mark Out of Stock" : "Mark Available"}
-          </button>
-        </div>
-      ))}
+      <Navbar />
+      <div className="page">
+        <h1>Employee - Stock Management</h1>
+        {items.map((item) => (
+          <div key={item.id}>
+            <span>{item.name}</span>
+            <button onClick={() => toggleAvailability(item)}>
+              {item.available ? "Mark Out of Stock" : "Mark Available"}
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

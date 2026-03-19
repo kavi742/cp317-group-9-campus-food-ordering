@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar.jsx";
 
 function MenuPage() {
   const [items, setItems] = useState([]);
@@ -21,16 +22,19 @@ function MenuPage() {
 
   return (
     <div>
-      <h1>Menu</h1>
-      {items.map((item) => (
-        <div key={item.id}>
-          <span>{item.name} - ${item.price}</span>
-          <button onClick={() => addToCart(item)} disabled={!item.available}>
-            {item.available ? "Add to Cart" : "Out of Stock"}
-          </button>
-        </div>
-      ))}
-      <button onClick={goToCart}>View Cart ({cart.length})</button>
+      <Navbar />
+      <div className="page">
+        <h1>Menu</h1>
+        {items.map((item) => (
+          <div key={item.id}>
+            <span>{item.name} - ${item.price}</span>
+            <button onClick={() => addToCart(item)} disabled={!item.available}>
+              {item.available ? "Add to Cart" : "Out of Stock"}
+            </button>
+          </div>
+        ))}
+        <button onClick={goToCart}>View Cart ({cart.length})</button>
+      </div>
     </div>
   );
 }

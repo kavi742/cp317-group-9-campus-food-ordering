@@ -78,6 +78,10 @@ function LoginPage() {
       });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleLogin();
+  };
+
   // ----------------------------------------------------------------
   // RENDER
   // This is the JSX that gets rendered to the screen.
@@ -102,6 +106,7 @@ function LoginPage() {
         placeholder="you@school.ca"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <label style={{ fontSize: "14px", fontWeight: "600" }}>Password</label>
@@ -110,6 +115,7 @@ function LoginPage() {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        onKeyDown={handleKeyDown}
       />
 
       <button onClick={handleLogin} style={{ marginTop: "8px" }}>
