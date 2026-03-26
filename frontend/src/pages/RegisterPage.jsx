@@ -37,17 +37,22 @@ function RegisterPage() {
 
   return (
     <div className="form-container">
-      <h1 style={{ marginBottom: "8px", fontSize: "24px" }}>Create Account</h1>
-      <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>Register for Campus Cafe</p>
+      <h1 className="form-title">Create Account</h1>
+      <p className="form-subtitle">Register for Campus Cafe</p>
       {error && <p className="error-msg">{error}</p>}
-      <label style={{ fontSize: "14px", fontWeight: "600" }}>Name</label>
-      <input placeholder="Your name" onKeyDown={handleKeyDown} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-      <label style={{ fontSize: "14px", fontWeight: "600" }}>Email</label>
-      <input placeholder="you@school.ca" type="email" onKeyDown={handleKeyDown} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-      <label style={{ fontSize: "14px", fontWeight: "600" }}>Password</label>
-      <input placeholder="Password" type="password" onKeyDown={handleKeyDown} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+      
+      <label className="form-label">Name</label>
+      <input value={form.name}placeholder="Your name" onKeyDown={handleKeyDown} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+      
+      <label className="form-label">Email</label>
+      <input value={form.email} placeholder="abcd1234@mylaurier.ca" type="email" onKeyDown={handleKeyDown} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+      
+      <label className="form-label">Password</label>
+      <input value={form.password} placeholder="Password" type="password" onKeyDown={handleKeyDown} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+      
       <button onClick={handleRegister} style={{ marginTop: "8px" }}>Register</button>
-      <p style={{ textAlign: "center", marginTop: "16px", fontSize: "14px", color: "var(--text-secondary)" }}>
+      
+      <p className="form-footer">
         Already have an account? <a href="/">Sign in</a>
       </p>
     </div>

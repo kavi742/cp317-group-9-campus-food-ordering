@@ -25,17 +25,47 @@ function MenuPage() {
   return (
     <div>
       <Navbar />
+
       <div className="page">
-        <h1>Menu</h1>
-        {items.map((item) => (
-          <div key={item.id}>
-            <span>{item.name} - ${item.price}</span>
-            <button onClick={() => addToCart(item)} disabled={!item.available}>
-              {item.available ? "Add to Cart" : "Out of Stock"}
-            </button>
-          </div>
-        ))}
-        <button onClick={goToCart}>View Cart ({cart.length})</button>
+        <div className="page-header">
+          <h1>Menu</h1>
+            <p className="page-subtitle">Some catchprase for the store here.</p>
+        </div>
+
+        {Object.keys(groupedItems).length === 0 ? (
+          <div className="empty-state">No menu items available right now.</div>
+        ) : (
+          Object.entries(groupedItems).map(([category, items]) => (
+            <div key={category}>
+              <h2 className="section-title">{category}</h2>
+
+              <div className="item-grid">
+                {categoryItems.map((item) => (
+                  <div key={item.id} className="card menu-card">
+                    <div className="menu-card-top">
+                      <div>
+                        <div className="menu-name">{item.name}</div>
+                        <div className="menu-category">{item.category}</div>
+                      </div>
+                      <div className="menu-price">${item.price.toFixed(2)}</div>
+                    </div>
+
+                    <p className="menu-description">{item.description || "No description available."}</p>
+                    
+                    <button onClick={() => addToCart(item)}
+                    disabled={!item.available}>
+                      {item.available ? "Add to Cart" : "Out of Stock"}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+
+        <div style={{marginTop: "28px" }}>
+          <button onClick={goToCart}>View Cart ({cart.length})</button>
+        </div>
       </div>
     </div>
   );

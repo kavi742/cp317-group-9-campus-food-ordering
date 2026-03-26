@@ -90,17 +90,17 @@ function LoginPage() {
   return (
     <div className="form-container">
 
-      <h1 style={{ marginBottom: "8px", fontSize: "24px" }}>
+      <h1 className="form-title">
         Campus Cafe
       </h1>
-      <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>
+      <p className="form-subtitle">
         Sign in to your account
       </p>
 
       {/* Error message -- only shows when error state is not empty */}
       {error && <p className="error-msg">{error}</p>}
 
-      <label style={{ fontSize: "14px", fontWeight: "600" }}>Email</label>
+      <label className="form-label">Email</label>
       <input
         type="email"
         placeholder="you@school.ca"
@@ -109,7 +109,7 @@ function LoginPage() {
         onKeyDown={handleKeyDown}
       />
 
-      <label style={{ fontSize: "14px", fontWeight: "600" }}>Password</label>
+      <label className="form-label">Password</label>
       <input
         type="password"
         placeholder="Password"
@@ -122,7 +122,7 @@ function LoginPage() {
         Sign In
       </button>
 
-      <p style={{ textAlign: "center", marginTop: "16px", fontSize: "14px", color: "var(--text-secondary)" }}>
+      <p className="form-footer">
         No account? <a href="/register">Register here</a>
       </p>
 

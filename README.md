@@ -88,7 +88,7 @@ cd ..
 
 ### Windows
 ```
-gradlew.bat bootRun
+.\gradlew.bat bootRun
 ```
 
 Backend runs on http://localhost:8080
