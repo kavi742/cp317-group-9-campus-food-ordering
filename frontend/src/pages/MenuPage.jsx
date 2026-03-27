@@ -1,17 +1,35 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 
 function MenuPage() {
   const [items, setItems] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(
+    JSON.parse(localStorage.getItem("cart") || "[]")
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch("/api/menu")
       .then((res) => res.json())
-      .then((res) => setItems(res.data));
+      .then((res) => setItems(res.data || "[]"))
+      .catch(() => setItems([]));
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const groupedItems = useMemo(() => {
+    return items.reduce((groups, item) => {
+      const category = item.category || "Other";
+      if (!groups[category]) {
+        groups[category] = [];
+      }
+      groups[category].push(item);
+      return groups;
+    }, {});
+  }, [items]);
 
   const addToCart = (item) => {
     setCart([...cart, item]);
@@ -35,7 +53,7 @@ function MenuPage() {
         {Object.keys(groupedItems).length === 0 ? (
           <div className="empty-state">No menu items available right now.</div>
         ) : (
-          Object.entries(groupedItems).map(([category, items]) => (
+          Object.entries(groupedItems).map(([category, categoryItems]) => (
             <div key={category}>
               <h2 className="section-title">{category}</h2>
 

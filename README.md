@@ -121,7 +121,7 @@ Mac/Linux:
 ```
 Windows:
 ```
-gradlew.bat bootRun
+.\gradlew.bat bootRun
 ```
 
 **Terminal 2 — Frontend**
